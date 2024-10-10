@@ -31,23 +31,23 @@ const AuthForm = () => {
     return (
         <div>
             <h2>{isLogin ? 'Login' : 'Sign Up'}</h2>
-            <form onSubmit={handleSubmit}>
+            <form class={'flex flex-column gap-2'} onSubmit={handleSubmit}>
                 <input
-                    type="email"
-                    placeholder="Email"
+                    type='email'
+                    placeholder='Email'
                     value={email}
-                    onInput={(e) => setEmail((e.target as HTMLInputElement).value)}
+                    onInput={e => setEmail((e.target as HTMLInputElement).value)}
                 />
                 <input
-                    type="password"
-                    placeholder="Password"
+                    type='password'
+                    placeholder='Password'
                     value={password}
-                    onInput={(e) => setPassword((e.target as HTMLInputElement).value)}
+                    onInput={e => setPassword((e.target as HTMLInputElement).value)}
                 />
-                <button type="submit">{isLogin ? 'Login' : 'Sign Up'}</button>
+                <button type='submit'>{isLogin ? 'Login' : 'Sign Up'}</button>
             </form>
             {errorMessage && <p style={{ color: 'red' }}>{errorMessage}</p>}
-            <button onClick={() => setIsLogin(!isLogin)}>
+            <button class={'mt-2'} onClick={() => setIsLogin(!isLogin)}>
                 {isLogin ? 'Switch to Sign Up' : 'Switch to Login'}
             </button>
         </div>

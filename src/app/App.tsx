@@ -1,9 +1,12 @@
 import { useState, useEffect } from 'preact/hooks';
-import TaskPage from '@/pages/TaskPage/TaskPage';
-import AuthForm from '@/features/auth/AuthForm';
+import { Session } from '@supabase/supabase-js';
+
+import TaskPage from '@/pages/TaskPage';
 import LogoutButton from '@/features/auth/LogoutButton';
 import { supabase } from '@/shared/api/supabaseClient';
-import { Session } from '@supabase/supabase-js';
+import AuthPage from '@/pages/AuthPage';
+
+import './App.css';
 
 const App = () => {
     const [session, setSession] = useState<Session | null>(null);
@@ -30,16 +33,16 @@ const App = () => {
     }, []);
 
     return (
-        <div>
+        <>
             {session ? (
                 <>
                     <TaskPage userId={session.user.id} />
                     <LogoutButton />
                 </>
             ) : (
-                <AuthForm />
+                <AuthPage />
             )}
-        </div>
+        </>
     );
 };
 
