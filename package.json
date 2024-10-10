@@ -4,7 +4,7 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "tsc -b && vite build",
     "preview": "vite preview"
   },
@@ -13,8 +13,12 @@
     "preact": "^10.24.1"
   },
   "devDependencies": {
+    "@eslint/js": "^9.12.0",
     "@preact/preset-vite": "^2.9.1",
+    "eslint": "^9.12.0",
+    "globals": "^15.11.0",
     "typescript": "^5.5.3",
+    "typescript-eslint": "^8.8.1",
     "vite": "^5.4.8"
   },
   "packageManager": "yarn@4.5.0"
