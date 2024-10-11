@@ -4,7 +4,7 @@ import AuthForm from '@/features/auth/AuthForm';
 
 const AuthPage: FunctionComponent = () => {
     return (
-        <div class={'m-auto w-120 h-60'}>
+        <div class={'m-auto w-fit h-60'}>
             <AuthForm />
         </div>
     );

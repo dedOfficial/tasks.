@@ -19,25 +19,21 @@ const TaskPage = ({ userId }: { userId: string }) => {
     useEffect(() => {
         const channel = supabase.channel('room1');
         channel
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, payload => {
-                setTasks(prev => [...prev, payload.new]);
+            .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+                setTasks((prev) => [...prev, payload.new]);
             })
             .subscribe();
 
-        return () => {
-            console.log('unsub');
-            supabase.removeChannel(channel);
-        };
+        return () => supabase.removeChannel(channel);
     }, []);
 
     return (
         <div>
-            <h1>Your Tasks</h1>
             <TaskCreation userId={userId} />
-            <ul>
-                {tasks?.map(task => (
+            <ul class={'border p-3 rounded mt-3 overflow-auto max-h-96'}>
+                {tasks?.map((task) => (
                     <li key={task.id}>
-                        {task.title} - {task.status}
+                        {task.status}: {task.title}
                     </li>
                 ))}
             </ul>
