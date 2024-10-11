@@ -7,7 +7,7 @@ const TaskCreation = ({ userId }: { userId: string }) => {
     const handleCreateTask = async (formData: { title: string; description?: string }) => {
         const task = createTask({ ...formData, user_id: userId });
         await taskApi.createTask(task);
-        message.success('提交成功');
+        message.success('Created!');
 
         return !!formData.title;
     };

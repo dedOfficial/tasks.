@@ -8,7 +8,7 @@ import VirtualList from 'rc-virtual-list';
 import { MoreOutlined } from '@ant-design/icons';
 
 const TasksList: FunctionComponent<{ userId: string }> = ({ userId }) => {
-    const [tasks, setTasks] = useState<Task[] | null>(null);
+    const [tasks, setTasks] = useState<Task[]>([]);
 
     // make initial select from tasks table
     useEffect(() => {
@@ -22,13 +22,20 @@ const TasksList: FunctionComponent<{ userId: string }> = ({ userId }) => {
     useEffect(() => {
         const channel = supabase.channel('room1');
         channel
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
+            .on('postgres_changes', { event: 'insert', schema: 'public', table: 'tasks' }, (payload) => {
                 setTasks((prev) => [...prev, payload.new]);
             })
             .subscribe();
 
         return () => supabase.removeChannel(channel);
     }, []);
+
+    const changeStatus = async (status: Task["status"], task: Task) => {
+        setTasks((prev) => [...prev.filter((f) => f.id !== task.id), {...task, status}]);
+
+        const updatedTask = await taskApi.updateTask(task.id, { status })
+        console.log('updatedTask', updatedTask);
+    };
 
     return (
         <Card classNames={{ body: '!p-4' }}>
@@ -58,7 +65,11 @@ const TasksList: FunctionComponent<{ userId: string }> = ({ userId }) => {
                                         avatar={
                                             <Checkbox
                                                 checked={isComplete}
-                                                onChange={(e) => console.log(e)}
+                                                onChange={(e) => {
+                                                    const checked = e.target.checked;
+                                                    if (checked) changeStatus('complete', item);
+                                                    else changeStatus('incomplete', item);
+                                                }}
                                             />
                                         }
                                         title={

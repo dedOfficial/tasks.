@@ -33,7 +33,7 @@ export const taskApi = {
       .from('tasks')
       .update(updatedFields)
       .eq('id', taskId)
-      .single();
+      .select();
 
     if (error) {
       console.error('Error updating task:', error);
