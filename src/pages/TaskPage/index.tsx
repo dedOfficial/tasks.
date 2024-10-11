@@ -1,43 +1,18 @@
-import { useState, useEffect } from 'preact/hooks';
-import { Task } from '@/entities/Task';
-import { taskApi } from '@/shared/api/taskApi';
 import TaskCreation from '@/features/task-creation/TaskCreation';
-import { supabase } from '@/shared/api/supabaseClient';
+import { PageContainer } from '@ant-design/pro-components';
+import TasksList from '@/features/tasks-list/TasksList';
 
 const TaskPage = ({ userId }: { userId: string }) => {
-    const [tasks, setTasks] = useState<Task[] | null>(null);
-
-    // make initial select from tasks table
-    useEffect(() => {
-        (async () => {
-            const fetchedTasks = await taskApi.fetchTasks(userId);
-            setTasks(fetchedTasks);
-        })();
-    }, []);
-
-    // sub to insert tasks to task's table for realtime update
-    useEffect(() => {
-        const channel = supabase.channel('room1');
-        channel
-            .on('postgres_changes', { event: '*', schema: 'public', table: 'tasks' }, (payload) => {
-                setTasks((prev) => [...prev, payload.new]);
-            })
-            .subscribe();
-
-        return () => supabase.removeChannel(channel);
-    }, []);
-
     return (
-        <div>
-            <TaskCreation userId={userId} />
-            <ul class={'border p-3 rounded mt-3 overflow-auto max-h-96'}>
-                {tasks?.map((task) => (
-                    <li key={task.id}>
-                        {task.status}: {task.title}
-                    </li>
-                ))}
-            </ul>
-        </div>
+        <PageContainer
+            title={'My tasks'}
+            content={
+                <div>
+                    <TaskCreation userId={userId} />
+                    <TasksList userId={userId} />
+                </div>
+            }
+        />
     );
 };
 

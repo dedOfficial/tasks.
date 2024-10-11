@@ -11,7 +11,7 @@ import { ErrorBoundary, lazy, LocationProvider, Route, Router } from 'preact-iso
 // Asynchronous (throws a promise)
 const TasksPage = lazy(() => import('@/pages/TaskPage'));
 // const Profile = lazy(() => import('./routes/profile.js'));
-// const NotFound = lazy(() => import('./routes/_404.js'));
+const NotFound = lazy(() => import('@/pages/NotFoundPage'));
 
 const App = () => {
     const [session, setSession] = useState<Session | null>(null);
@@ -52,7 +52,7 @@ const App = () => {
                                 component={() => <TasksPage userId={session?.user.id} />}
                             />
                             {/* `default` prop indicates a fallback route. Useful for 404 pages */}
-                            {/*<NotFound default />*/}
+                            <NotFound default />
                         </Router>
                     </Layout>
                 ) : (

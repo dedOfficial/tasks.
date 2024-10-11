@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "tailwind:watch": "yarn tailwindcss -i ./src/shared/styles/_input.css -o ./src/shared/styles/index.css --watch",
-    "dev": "vite --host && yarn tailwind:watch",
+    "dev": "vite --host",
     "build": "tsc -b && vite build",
     "preview": "vite preview",
     "lint": "eslint src",

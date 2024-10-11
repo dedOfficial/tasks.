@@ -1,34 +1,33 @@
-import { useState } from 'preact/hooks';
 import { createTask } from '@/entities/Task';
 import { taskApi } from '@/shared/api/taskApi';
+import { ProForm, ProFormText } from '@ant-design/pro-components';
+import { message } from 'antd';
 
 const TaskCreation = ({ userId }: { userId: string }) => {
-    const [title, setTitle] = useState('');
-    const [description, setDescription] = useState('');
-
-    const handleCreateTask = async () => {
-        const task = createTask({ title, description, user_id: userId });
+    const handleCreateTask = async (formData: { title: string; description?: string }) => {
+        const task = createTask({ ...formData, user_id: userId });
         await taskApi.createTask(task);
-        setTitle('');
-        setDescription('');
+        message.success('提交成功');
+
+        return !!formData.title;
     };
 
     return (
-        <div>
-            <h2>Create a new task</h2>
-            <input
-                type="text"
-                value={title}
-                onInput={(e) => setTitle((e.target as HTMLInputElement).value)}
-                placeholder="Task Title"
+        <ProForm
+            className={'mb-2 ml-1'}
+            layout={'inline'}
+            onFinish={handleCreateTask}
+            autoFocusFirstInput
+            clearOnDestroy={true}
+        >
+            <ProFormText
+                name={'title'}
+                label={'Create new task'}
+                required={true}
+                placeholder={'Title'}
             />
-            <textarea
-                value={description}
-                onInput={(e) => setDescription((e.target as HTMLTextAreaElement).value)}
-                placeholder="Task Description"
-            />
-            <button onClick={handleCreateTask}>Create Task</button>
-        </div>
+            <ProFormText name={'description'} placeholder={'Description'} />
+        </ProForm>
     );
 };
 
